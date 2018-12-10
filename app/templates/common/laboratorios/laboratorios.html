@@ -1,0 +1,49 @@
+{% import "bootstrap/utils.html" as utils %}
+{% extends "base.html" %}
+{% block title %}{{title}}{% endblock %}
+{% block body %}
+<div class="content-section">
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <br />
+        {{ utils.flashed_messages() }}
+        <br />
+        <h1 style="text-align:center;">Laboratóros</h1>
+        <a href="{{ url_for('admin.add_usuario') }}" class="btn btn-default btn-lg">
+          <i class="fa fa-plus"></i>
+          Adicionar laboratório
+        </a>
+        <br />
+        {% if laboratorios %}
+        <hr class="intro-divider">
+        <div class="row">
+          {% for lab in laboratorios %}
+          <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="card bg-light mb-3" style="max-width: 18rem;">
+              <div class="card-header">
+                <p>{{ lab.descricao }}</p>
+              </div>
+              <div class="card-body">
+                <ul class="list-group">
+                  <li class="list-group-item list-group-item-primary">Projetos indisponíveis</li>
+                  <a class="list-group-item list-group-item-primary" href="{{ url_for('admin.edt_usuario', lab=lab.id) }}">Insumos</a>
+                  <a class="list-group-item list-group-item-primary" href="{{ url_for('admin.edt_usuario', lab=lab.id) }}">Equipamentos</a>
+                  {% if usuario.is_admin %}
+                  <a class="list-group-item list-group-item-primary" href="{{ url_for('admin.edt_usuario', lab=lab.id) }}">
+                    <i class="fa fa-edit"></i> Editar laboratório
+                  </a>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
