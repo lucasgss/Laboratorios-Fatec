@@ -25,11 +25,10 @@ def list_laboratorios():
 	if current_user.is_admin:
 		laboratorios = Laboratorio.query.all()
 	else:
-		laboratorios = Laboratorio.query.filter_by(
-			or_(Laboratorio.laboratorio_professorTitular_id == current_user.id, 
-			Laboratorio.laboratorio_professorSuplente_id==current_user.id))
+		laboratorios = Laboratorio.query.filter(or_(Laboratorio.professorTitular_id==current_user.id, 
+												Laboratorio.professorSuplente_id==current_user.id))
 
-	return render_template('common/laboratorios.html', laboratorios=laboratorios, title="Laboratórios").encode('utf-8')
+	return render_template('common/laboratorios/laboratorios.html', laboratorios=laboratorios, title="Laboratórios").encode('utf-8')
 	
 
 @common.route('/laboratorio/adicionar', methods=['GET','POST'])
@@ -51,17 +50,18 @@ def add_laboratorio():
 		# redicreciona para lista de usuarios
 		return redirect(url_for('common.list_laboratorios'))
 
-	return render_template('common/laboratorio.html', title="Adicionar Laboratório").encode('utf-8')
+	return render_template('common/laboratorios/laboratorio.html', form=form, title="Adicionar Laboratório").encode('utf-8')
 	
 	
-@common.route('/laboratorio/editar/<int:id>', methods=['GET','POST'])
+@common.route('/laboratorio/editar/<int:lab>', methods=['GET','POST'])
 @login_required
-def edt_laboratorio(id):
+def edt_laboratorio(lab):
 	"""
 	Render the laboratorios template on the /laboratorios route
 	"""
 	check_admin()
+	form = LabortorioForm()
 	
 
-	return render_template('common/laboratorio.html', title="Adicionar Laboratório").encode('utf-8')
+	return render_template('common/laboratorios/laboratorio.html', form=form, title="Adicionar Laboratório").encode('utf-8')
 		

@@ -10,8 +10,8 @@ class LabortorioForm(FlaskForm):
 	Form para adicionar Laboratório
 	"""
     descricao = StringField('Descrição', validators=[DataRequired()])
-    professorTitular = QuerySelectField(validators=[DataRequired()], query_factory=lambda: Usuario.query.all(), get_label="nome") 
-    professorSuplente = QuerySelectField(validators=[DataRequired()], query_factory=lambda: Usuario.query.all(), get_label="nome") 
+    professorTitular_id = QuerySelectField(label="Professor Titular", validators=[DataRequired()], query_factory=lambda: Usuario.query.all(), get_label="nome") 
+    professorSuplente_id = QuerySelectField(label="Professor Suplente", validators=[DataRequired()], query_factory=lambda: Usuario.query.all(), get_label="nome") 
     submit = SubmitField('Adicionar')
 
     def validate_descricao(self, field):

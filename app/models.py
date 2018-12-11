@@ -64,8 +64,8 @@ class Laboratorio(db.Model):
 	professorTitular_id = db.Column(db.Integer, db.ForeignKey('usuario.id'))
 	professorSuplente_id = db.Column(db.Integer, db.ForeignKey('usuario.id'))
 	
-	professorTitular = db.relationship("Usuario",foreign_keys=[professorTitular_id], backref="laboratoriosTitular")
-	professorSuplente = db.relationship("Usuario",foreign_keys=[professorSuplente_id], backref="laboratoriosSuplente")
+	professorTitular = db.relationship("Usuario",foreign_keys=[professorTitular_id], backref="laboratoriosTitular", uselist=False)
+	professorSuplente = db.relationship("Usuario",foreign_keys=[professorSuplente_id], backref="laboratoriosSuplente", uselist=False)
 
 	def __repr__(self):
 		return '<Laboratorio: {}>'.format(self.descricao)

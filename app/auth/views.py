@@ -28,7 +28,7 @@ def login():
 			if usuario.is_admin:
 				return redirect(url_for('home.admin_dashboard').encode('utf-8'))
 			else:
-				return redirect(url_for('home.dashboard').encode('utf-8'))
+				return redirect(url_for('common.list_laboratorios').encode('utf-8'))
 
 		# Se os detalhes de login estiverem errados.
 		else:
