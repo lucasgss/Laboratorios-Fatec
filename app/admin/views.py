@@ -66,7 +66,7 @@ def edt_usuario(id):
 
 	form = EditarUsuario(obj=usuario)
 	if form.validate_on_submit():
-		isadmin = (form.papel.data == "Administrador")
+		isadmin = (form.papel.data.id == 2)
 		usuario.nome=form.nome.data
 		usuario.email=form.email.data
 		if form.password.data != "":

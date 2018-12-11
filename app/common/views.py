@@ -2,7 +2,7 @@
 from flask import abort, flash, redirect, url_for, render_template
 from flask_login import current_user, login_required
 from sqlalchemy import or_
-from forms import  LabortorioForm
+from forms import  AddLabortorioForm, EdtLabortorioForm
 from . import common
 from ..models import Laboratorio
 
@@ -38,11 +38,11 @@ def add_laboratorio():
 	Render the laboratorios template on the /laboratorios route
 	"""
 	check_admin()
-	form = LabortorioForm()
+	form = AddLabortorioForm()
 	if form.validate_on_submit():
 		laboratorio = Laboratorio(descricao=form.descricao.data,
-								professorTitular_id=form.professorTitular_id.data,
-								professorSuplente_id=form.professorSuplente_id.data)
+								professorTitular=form.professorTitular_id.data,
+								professorSuplente=form.professorSuplente_id.data)
 		db.session.add(laboratorio)
 		db.session.commit()
 		flash('Laboratório adicionado com sucesso!')
@@ -60,8 +60,19 @@ def edt_laboratorio(lab):
 	Render the laboratorios template on the /laboratorios route
 	"""
 	check_admin()
-	form = LabortorioForm()
-	
 
+	laboratorio = Laboratorio.query.get_or_404(lab)
+
+
+	form = EdtLabortorioForm(obj=laboratorio)
+	if form.validate_on_submit():
+		laboratorio.descricao = form.descricao.data
+		laboratorio.professorSuplente = form.professorSuplente_id.data
+		laboratorio.professorTitular = form.professorTitular_id.data
+
+		db.session.add(laboratorio)
+		db.session.commit()
+
+	
 	return render_template('common/laboratorios/laboratorio.html', form=form, title="Adicionar Laboratório").encode('utf-8')
 		
