@@ -79,6 +79,7 @@ class Insumo(db.Model):
 	quantidadeMinima = db.Column(db.Integer)
 	descricao = db.Column(db.String(60))
 	laboratorio_id = db.Column(db.Integer, db.ForeignKey('laboratorio.id'))
+	laboratorio = db.relationship('Laboratorio', uselist=False)
 
 	def __repr__(self):
 		return '<Insumo: {}>'.format(self.descricao)

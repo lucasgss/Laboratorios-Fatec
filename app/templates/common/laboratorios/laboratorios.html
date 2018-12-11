@@ -9,13 +9,15 @@
         <br />
         {{ utils.flashed_messages() }}
         <br />
-        <h1 style="text-align:center;">Laboratórios</h1>
-        {% if current_user.is_admin %}
-        <a href="{{ url_for('common.add_laboratorio') }}" class="btn btn-default btn-lg">
-          <i class="fa fa-plus"></i>
-          Adicionar laboratório
-        </a>
-        {% endif %}
+        <div class="center" style="text-align:center;">
+          <h1>Laboratórios</h1>
+          {% if current_user.is_admin %}
+          <a href="{{ url_for('common.add_laboratorio') }}" class="btn btn-default btn-lg">
+            <i class="fa fa-plus"></i>
+            Adicionar laboratório
+          </a>
+          {% endif %}
+        </div>
         <br />
         {% if laboratorios %}
         <hr class="intro-divider">

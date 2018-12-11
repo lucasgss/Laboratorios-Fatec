@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from sqlalchemy import or_
 from forms import  AddLabortorioForm, EdtLabortorioForm
 from . import common
-from ..models import Laboratorio
+from ..models import Laboratorio, Insumo
 
 from .. import db
 
@@ -67,12 +67,24 @@ def edt_laboratorio(lab):
 	form = EdtLabortorioForm(obj=laboratorio)
 	if form.validate_on_submit():
 		laboratorio.descricao = form.descricao.data
-		laboratorio.professorSuplente = form.professorSuplente_id.data
-		laboratorio.professorTitular = form.professorTitular_id.data
+		laboratorio.professorSuplente = form.professorSuplente.data
+		laboratorio.professorTitular = form.professorTitular.data
 
 		db.session.add(laboratorio)
 		db.session.commit()
 
 	
 	return render_template('common/laboratorios/laboratorio.html', form=form, title="Adicionar Laboratório").encode('utf-8')
-		
+
+@common.route('/Insumos/<int:lab>')
+@login_required
+def list_insumos(lab):
+	"""
+	Render the Insumo template on the /insumos route
+	"""
+	
+	insumos = Insumo.query.filter_by(laboratorio_id=lab)
+
+
+	return render_template('common/laboratorios/laboratorios.html', insumos=insumos, title="Insumos").encode('utf-8')
+	

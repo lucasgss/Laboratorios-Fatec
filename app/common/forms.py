@@ -27,8 +27,8 @@ class EdtLabortorioForm(FlaskForm):
 	Form para editar Laboratório
 	"""
     descricao = StringField('Descrição', validators=[DataRequired()])
-    professorTitular_id = QuerySelectField(label="Professor Titular", validators=[DataRequired()], query_factory=lambda: Usuario.query.all(), get_label="nome") 
-    professorSuplente_id = QuerySelectField(label="Professor Suplente", validators=[DataRequired()], query_factory=lambda: Usuario.query.all(), get_label="nome") 
+    professorTitular = QuerySelectField(label="Professor Titular", validators=[DataRequired()], query_factory=lambda: Usuario.query.all(), get_label="nome") 
+    professorSuplente = QuerySelectField(label="Professor Suplente", validators=[DataRequired()], query_factory=lambda: Usuario.query.all(), get_label="nome") 
     submit = SubmitField('Editar')
 
     def validate_professorSuplente(self, field):
