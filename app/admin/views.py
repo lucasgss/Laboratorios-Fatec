@@ -47,7 +47,7 @@ def add_usuario():
 		db.session.commit()
 		flash('Usuario adicionado com sucesso!')
 
-		# redicreciona para lista de usuarios
+		# redireciona para lista de usuarios
 		return redirect(url_for('admin.list_usuarios'))
 
 	return render_template('admin/usuarios/usuario.html', form=form, title='Usuários'.decode('utf-8')).encode('utf-8')
@@ -79,7 +79,7 @@ def edt_usuario(id):
 		db.session.commit()
 		flash('Usuario editado com sucesso!')
 
-		# redicreciona para lista de usuarios
+		# redireciona para lista de usuarios
 		return redirect(url_for('admin.list_usuarios'))
 
 	form.confirmar_email.data = usuario.email

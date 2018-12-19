@@ -31,7 +31,7 @@
                 </div>
                 <ul class="list-group">
                   <li class="list-group-item list-group-item-primary">Projetos indisponíveis</li>
-                  <a class="list-group-item list-group-item-primary" href="{{ url_for('common.edt_laboratorio', lab=lab.id) }}">Insumos</a>
+                  <a class="list-group-item list-group-item-primary" href="{{ url_for('common.list_insumos', lab=lab.id) }}">Insumos</a>
                   <a class="list-group-item list-group-item-primary" href="{{ url_for('common.edt_laboratorio', lab=lab.id) }}">Equipamentos</a>
                 </ul>
                 {% if current_user.is_admin %}

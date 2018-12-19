@@ -77,7 +77,7 @@ class Insumo(db.Model):
 	descricao = db.Column(db.String(60), unique=True)
 	quantidadeAtual = db.Column(db.Integer)
 	quantidadeMinima = db.Column(db.Integer)
-	descricao = db.Column(db.String(60))
+	codigoBEC = db.Column(db.String(30))
 	laboratorio_id = db.Column(db.Integer, db.ForeignKey('laboratorio.id'))
 	laboratorio = db.relationship('Laboratorio', uselist=False)
 
