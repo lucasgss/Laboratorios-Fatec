@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from sqlalchemy import or_
 from forms import  AddLabortorioForm, EdtLabortorioForm, AddInsumo, EdtInsumo
 from . import common
-from ..models import Laboratorio, Insumo
+from ..models import Laboratorio, Insumo, Artefato
 
 from .. import db
 
@@ -157,3 +157,36 @@ def edt_insumo(lab, insumo):
 		return redirect(url_for('common.list_insumos', lab=lab))
 
 	return render_template('common/insumos/insumo.html', form=form, add_ism=False, title="Editar Insumo").encode('utf-8')
+
+@common.route('/artefatos/<int:lab>')
+@login_required
+def list_artefatos(lab):
+	"""
+	Render the artefatos template on the /artefatos route
+	"""
+	check_PermissionLaboratorioUsuario(lab)
+	
+	artefatos = Artefato.query.filter_by(laboratorio_id=lab)
+	
+	if artefatos == None:
+		abort(404)
+
+	return render_template('common/artefatos/artefatos.html', artefatos=artefatos, lab=lab, title="Artefatos").encode('utf-8')
+	
+	
+@common.route('/artefato/adicionar/<int:lab>')
+@login_required
+def add_artefato(lab):
+	"""
+	Render the adicionar template on the /artefato/adicionar route
+	"""
+	check_PermissionLaboratorioUsuario(lab)
+	
+@common.route('/artefato/editar/<int:lab>/<int:artefato>')
+@login_required
+def edt_artefato(lab, artefato_Id):
+	"""
+	Render the editar template on the /artefato/editar route
+	"""
+	check_PermissionLaboratorioUsuario(lab)
+	

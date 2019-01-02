@@ -63,3 +63,4 @@ class EdtInsumo(FlaskForm):
     codigoBEC =  StringField('Código BEC', validators=[Length(max=30)])
     submit = SubmitField('Salvar')
         
+        

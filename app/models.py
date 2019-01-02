@@ -115,5 +115,9 @@ class Artefato(db.Model):
 	artefatoTipo_id = db.Column(db.Integer, db.ForeignKey('artefatoTipo.id'), nullable=False)
 	artefatoDono_id = db.Column(db.Integer, db.ForeignKey('artefatoDono.id'), nullable=False)
 
+	artefatoTipo = db.relationship('ArtefatoTipo', uselist=False)
+	artefatoDono = db.relationship('ArtefatoDono', uselist=False)
+
+
 	def __repr__(self):
 		return '<Artefato: {}>'.format(self.descricao)
