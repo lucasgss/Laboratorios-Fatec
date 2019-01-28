@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from flask_wtf import FlaskForm
-from wtforms import  PasswordField, StringField, SubmitField, ValidationError, IntegerField
-from wtforms.validators import  DataRequired, Email, EqualTo, Length
+from wtforms import  PasswordField, StringField, SubmitField, ValidationError, IntegerField, BooleanField, DecimalField
+from wtforms.validators import  DataRequired, Email, EqualTo, Length, InputRequired
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
-from ..models import Laboratorio, Usuario, Insumo
+from ..models import Laboratorio, Usuario, Insumo, ArtefatoTipo, ArtefatoDono
 
 class AddLabortorioForm(FlaskForm):
     """
@@ -62,5 +62,29 @@ class EdtInsumo(FlaskForm):
     quantidadeMinima = IntegerField("Quantidade mínima", validators=[DataRequired()])
     codigoBEC =  StringField('Código BEC', validators=[Length(max=30)])
     submit = SubmitField('Salvar')
-        
+             
+class AddArtefato(FlaskForm):
+    """
+	Form para adicionar Artefato
+	"""     
+    descricao = StringField('Descrição', validators=[DataRequired(), Length(max=60)])
+    capacidade = StringField('Capacidade', validators=[DataRequired(), Length(max=20)])
+    status = BooleanField('Funcional')
+    valorEstimado = StringField("Valor estimado", validators=[InputRequired()])
+    numeroPatrimonio = StringField('Numero do Patrimônio', validators=[DataRequired(), Length(max=20)])
+    artefatoTipo = QuerySelectField(label="Tipo de artefato", validators=[DataRequired()], query_factory=lambda: ArtefatoTipo.query.all(), get_label="descricao") 
+    artefatoDono = QuerySelectField(label="Proprietário do artefato", validators=[DataRequired()], query_factory=lambda: ArtefatoDono.query.all(), get_label="descricao") 
+    submit = SubmitField('Salvar')
+
+    def validate(self):
+        if not FlaskForm.validate(self):
+            return False
+        try:
+            float(self.valorEstimado.data)
+        except ValueError:
+            self.valorEstimado.errors.append(
+                'Valor estimado deve ser um numero decimal válido.')
+            return False
+        return True
+
         

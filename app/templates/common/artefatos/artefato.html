@@ -12,7 +12,18 @@
 			<h1>Editar Insumo</h1>
 		{% endif %}
 		<br/>
-		{{ wtf.quick_form(form) }}
+		<form action="" method="post" class="form" role="form">
+			{{ form.hidden_tag() }}
+			{{ wtf.form_errors(form, hiddens="only") }}
+			{{ wtf.form_field(form.descricao) }}
+			{{ wtf.form_field(form.capacidade) }}
+			{{ wtf.form_field(form.valorEstimado) }}
+			{{ wtf.form_field(form.numeroPatrimonio) }}
+			{{ wtf.form_field(form.artefatoTipo) }}
+			{{ wtf.form_field(form.artefatoDono) }}
+			{{ wtf.form_field(form.status) }}
+			{{ wtf.form_field(form.submit) }}
+		</form>
 	</div>
 </div>
 {% endblock %}

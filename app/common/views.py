@@ -2,7 +2,7 @@
 from flask import abort, flash, redirect, url_for, render_template
 from flask_login import current_user, login_required
 from sqlalchemy import or_
-from forms import  AddLabortorioForm, EdtLabortorioForm, AddInsumo, EdtInsumo
+from forms import  AddLabortorioForm, EdtLabortorioForm, AddInsumo, EdtInsumo, AddArtefato
 from . import common
 from ..models import Laboratorio, Insumo, Artefato
 
@@ -174,7 +174,7 @@ def list_artefatos(lab):
 	return render_template('common/artefatos/artefatos.html', artefatos=artefatos, lab=lab, title="Artefatos").encode('utf-8')
 	
 	
-@common.route('/artefato/adicionar/<int:lab>')
+@common.route('/artefato/adicionar/<int:lab>', methods=['GET','POST'])
 @login_required
 def add_artefato(lab):
 	"""
@@ -182,7 +182,28 @@ def add_artefato(lab):
 	"""
 	check_PermissionLaboratorioUsuario(lab)
 	
-@common.route('/artefato/editar/<int:lab>/<int:artefato>')
+	form = AddArtefato()
+	if form.validate_on_submit():
+		artefato = Artefato(descricao=form.descricao.data,
+							capacidade=form.descricao.data,
+							status=form.status.data,
+							valorEstimado=form.valorEstimado.data,
+							numeroPatrimonio=form.numeroPatrimonio.data,
+							artefatoTipo=form.artefatoTipo.data,
+							artefatoDono=form.artefatoDono.data,
+							laboratorio_id=lab)
+							
+		db.session.add(artefato)
+		db.session.commit()
+		flash('Artefato adicionado com sucesso!')
+
+		# redireciona para lista de insumos
+		return redirect(url_for('common.list_artefatos', lab=lab))
+
+	return render_template('common/artefatos/artefato.html', form=form, title="Adicionar Artefato").encode('utf-8')
+	
+	
+@common.route('/artefato/editar/<int:lab>/<int:artefato>', methods=['GET','POST'])
 @login_required
 def edt_artefato(lab, artefato_Id):
 	"""
