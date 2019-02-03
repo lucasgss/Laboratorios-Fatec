@@ -87,4 +87,19 @@ class AddArtefato(FlaskForm):
             return False
         return True
 
+class AddArtefatoTipo(FlaskForm):
+    """
+	Form para adicionar Artefato Tipo
+	"""     
+    descricao = StringField('Descrição', validators=[DataRequired(), Length(max=60)])
+    submitTipo = SubmitField('Salvar')
+    
+class AddArtefatoDono(FlaskForm):
+    """
+	Form para adicionar Artefato Dono
+	"""     
+    descricao = StringField('Descrição', validators=[DataRequired(), Length(max=60)])
+    submitDono = SubmitField('Salvar')
+    
+
         

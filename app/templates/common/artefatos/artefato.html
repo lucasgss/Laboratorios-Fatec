@@ -19,11 +19,60 @@
 			{{ wtf.form_field(form.capacidade) }}
 			{{ wtf.form_field(form.valorEstimado) }}
 			{{ wtf.form_field(form.numeroPatrimonio) }}
-			{{ wtf.form_field(form.artefatoTipo) }}
+			{{ wtf.form_field(form.artefatoTipo) }} 
+			{% if current_user.is_admin %}
+			<!-- Button trigger modal -->
+			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#tipoModal">
+				Adicionar tipo de artefato
+			</button>
+			{% endif %}
 			{{ wtf.form_field(form.artefatoDono) }}
+			{% if current_user.is_admin %}
+			<!-- Button trigger modal -->
+			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#donoModal">
+				Adicionar dono de artefato
+			</button>
+			{% endif %}
 			{{ wtf.form_field(form.status) }}
 			{{ wtf.form_field(form.submit) }}
 		</form>
 	</div>
 </div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="tipoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="myModalLabel">Adicionar tipo de artefato:</h4>
+		</div>
+		<div class="modal-body">
+			<div id="addTipoArtefato">
+					{{ wtf.quick_form(formTipo) }}
+			</div>
+		</div>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="donoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="myModalLabel">Adicionar dono de artefato:</h4>
+		</div>
+		<div class="modal-body">
+			<div id="addDonoArtefato">
+					{{ wtf.quick_form(formDono) }}
+			</div>
+		</div>
+		</div>
+	</div>
+</div>
+
 {% endblock %}

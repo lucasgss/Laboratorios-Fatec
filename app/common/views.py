@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from flask import abort, flash, redirect, url_for, render_template
+from flask import abort, flash, redirect, url_for, render_template, request
 from flask_login import current_user, login_required
 from sqlalchemy import or_
-from forms import  AddLabortorioForm, EdtLabortorioForm, AddInsumo, EdtInsumo, AddArtefato
+from forms import  AddLabortorioForm, EdtLabortorioForm, AddInsumo, EdtInsumo, AddArtefato, AddArtefatoTipo, AddArtefatoDono
 from . import common
-from ..models import Laboratorio, Insumo, Artefato
+from ..models import Laboratorio, Insumo, Artefato, ArtefatoTipo, ArtefatoDono
 
 from .. import db
 
@@ -183,7 +183,10 @@ def add_artefato(lab):
 	check_PermissionLaboratorioUsuario(lab)
 	
 	form = AddArtefato()
-	if form.validate_on_submit():
+	formTipo = AddArtefatoTipo()
+	formDono = AddArtefatoDono()
+
+	if form.submit.data and form.validate_on_submit():
 		artefato = Artefato(descricao=form.descricao.data,
 							capacidade=form.descricao.data,
 							status=form.status.data,
@@ -199,8 +202,29 @@ def add_artefato(lab):
 
 		# redireciona para lista de insumos
 		return redirect(url_for('common.list_artefatos', lab=lab))
+		
+	if formTipo.submitTipo.data and formTipo.validate_on_submit():
+		artefatoTipo = ArtefatoTipo(descricao=formTipo.descricao.data)
+							
+		db.session.add(artefatoTipo)
+		db.session.commit()
+		flash('Tipo de artefato adicionado com sucesso!')
 
-	return render_template('common/artefatos/artefato.html', form=form, title="Adicionar Artefato").encode('utf-8')
+		# redireciona para lista de insumos
+		#return redirect(url_for('common.list_artefatos', lab=lab))
+	
+	if formDono.submitDono.data and formDono.validate_on_submit():
+		artefatoDono = ArtefatoDono(descricao=formDono.descricao.data)
+							
+		db.session.add(artefatoDono)
+		db.session.commit()
+		flash('Dono de artefato adicionado com sucesso!')
+
+		# redireciona para lista de insumos
+		#return redirect(url_for('common.list_artefatos', lab=lab))
+
+
+	return render_template('common/artefatos/artefato.html', form=form, formTipo=formTipo, formDono=formDono, title="Adicionar Artefato").encode('utf-8')
 	
 	
 @common.route('/artefato/editar/<int:lab>/<int:artefato>', methods=['GET','POST'])
