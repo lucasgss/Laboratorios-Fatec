@@ -188,7 +188,7 @@ def add_artefato(lab):
 
 	if form.submit.data and form.validate_on_submit():
 		artefato = Artefato(descricao=form.descricao.data,
-							capacidade=form.descricao.data,
+							capacidade=form.capacidade.data,
 							status=form.status.data,
 							valorEstimado=form.valorEstimado.data,
 							numeroPatrimonio=form.numeroPatrimonio.data,
@@ -210,8 +210,7 @@ def add_artefato(lab):
 		db.session.commit()
 		flash('Tipo de artefato adicionado com sucesso!')
 
-		# redireciona para lista de insumos
-		#return redirect(url_for('common.list_artefatos', lab=lab))
+		form.descricao.data = ''
 	
 	if formDono.submitDono.data and formDono.validate_on_submit():
 		artefatoDono = ArtefatoDono(descricao=formDono.descricao.data)
@@ -220,9 +219,7 @@ def add_artefato(lab):
 		db.session.commit()
 		flash('Dono de artefato adicionado com sucesso!')
 
-		# redireciona para lista de insumos
-		#return redirect(url_for('common.list_artefatos', lab=lab))
-
+		form.descricao.data = ''
 
 	return render_template('common/artefatos/artefato.html', form=form, formTipo=formTipo, formDono=formDono, title="Adicionar Artefato").encode('utf-8')
 	
