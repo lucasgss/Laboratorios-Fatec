@@ -2,7 +2,7 @@
 from flask import abort, flash, redirect, url_for, render_template, request
 from flask_login import current_user, login_required
 from sqlalchemy import or_
-from forms import  AddLabortorioForm, EdtLabortorioForm, AddInsumo, EdtInsumo, AddArtefato, AddArtefatoTipo, AddArtefatoDono
+from forms import  AddLabortorioForm, EdtLabortorioForm, AddInsumo, EdtInsumo, FmrArtefato, AddArtefatoTipo, AddArtefatoDono
 from . import common
 from ..models import Laboratorio, Insumo, Artefato, ArtefatoTipo, ArtefatoDono
 
@@ -138,8 +138,8 @@ def edt_insumo(lab, insumo):
 	"""
 	Render the insumo template on the /insumo/editar/ route
 	"""
-	insumo = Insumo.query.get_or_404(insumo)
 	check_PermissionLaboratorioUsuario(lab)
+	insumo = Insumo.query.get_or_404(insumo)
 
 	form = EdtInsumo(obj=insumo)
 	
@@ -173,7 +173,7 @@ def list_artefatos(lab):
 
 	return render_template('common/artefatos/artefatos.html', artefatos=artefatos, lab=lab, title="Artefatos").encode('utf-8')
 	
-	
+
 @common.route('/artefato/adicionar/<int:lab>', methods=['GET','POST'])
 @login_required
 def add_artefato(lab):
@@ -182,7 +182,7 @@ def add_artefato(lab):
 	"""
 	check_PermissionLaboratorioUsuario(lab)
 	
-	form = AddArtefato()
+	form = FmrArtefato()
 	formTipo = AddArtefatoTipo()
 	formDono = AddArtefatoDono()
 
@@ -226,9 +226,51 @@ def add_artefato(lab):
 	
 @common.route('/artefato/editar/<int:lab>/<int:artefato>', methods=['GET','POST'])
 @login_required
-def edt_artefato(lab, artefato_Id):
+def edt_artefato(lab, artefato):
 	"""
 	Render the editar template on the /artefato/editar route
 	"""
 	check_PermissionLaboratorioUsuario(lab)
+	
+	artefato = Artefato.query.get_or_404(artefato)
+	formTipo = AddArtefatoTipo()
+	formDono = AddArtefatoDono()
+
+	form = FmrArtefato(obj=artefato)
+	
+	if form.submit.data and form.validate_on_submit():
+		artefato.descricao=form.descricao.data
+		artefato.capacidade=form.capacidade.data
+		artefato.status=form.status.data
+		artefato.valorEstimado=form.valorEstimado.data
+		artefato.numeroPatrimonio=form.numeroPatrimonio.data
+		artefato.artefatoTipo=form.artefatoTipo.data
+		artefato.artefatoDono=form.artefatoDono.data
+		artefato.laboratorio_id=lab
+
+		db.session.add(artefato)
+		db.session.commit()
+		flash('Artefato editado com sucesso!')
+
+		# redireciona para lista de artefatos
+		return redirect(url_for('common.list_artefatos', lab=lab))
+	
+	if formTipo.submitTipo.data and formTipo.validate_on_submit():
+		artefatoTipo = ArtefatoTipo(descricao=formTipo.descricao.data)
+							
+		db.session.add(artefatoTipo)
+		db.session.commit()
+		flash('Tipo de artefato adicionado com sucesso!')
+		form.descricao.data = ''
+	
+	if formDono.submitDono.data and formDono.validate_on_submit():
+		artefatoDono = ArtefatoDono(descricao=formDono.descricao.data)
+							
+		db.session.add(artefatoDono)
+		db.session.commit()
+		flash('Dono de artefato adicionado com sucesso!')
+
+		form.descricao.data = ''
+
+	return render_template('common/artefatos/artefato.html', form=form, add_art=False, formTipo=formTipo, formDono=formDono, title="Editar Artefato").encode('utf-8')
 	

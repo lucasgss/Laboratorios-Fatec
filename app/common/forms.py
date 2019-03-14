@@ -63,7 +63,7 @@ class EdtInsumo(FlaskForm):
     codigoBEC =  StringField('Código BEC', validators=[Length(max=30)])
     submit = SubmitField('Salvar')
              
-class AddArtefato(FlaskForm):
+class FmrArtefato(FlaskForm):
     """
 	Form para adicionar Artefato
 	"""     
@@ -80,6 +80,7 @@ class AddArtefato(FlaskForm):
         if not FlaskForm.validate(self):
             return False
         try:
+            self.valorEstimado.data = self.valorEstimado.data.replace(",",".")
             float(self.valorEstimado.data)
         except ValueError:
             self.valorEstimado.errors.append(
@@ -101,5 +102,5 @@ class AddArtefatoDono(FlaskForm):
     descricao = StringField('Descrição', validators=[DataRequired(), Length(max=60)])
     submitDono = SubmitField('Salvar')
     
-
+  
         
