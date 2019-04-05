@@ -28,6 +28,19 @@ def check_PermissionLaboratorioUsuario(laboratorio_id):
 	if not laboratorio:
 		abort(403)
 
+@common.add_app_template_filter
+def verify_insumos(insumos):
+	if all(insumo.quantidadeAtual >= insumo.quantidadeMinima for insumo in insumos):
+		return "primary"
+	return "danger"
+
+@common.add_app_template_filter
+def verify_artefatos(artefatos):
+	if all(artefato.status for artefato in artefatos):
+		return "primary"
+	return "danger"
+
+
 @common.route('/laboratorios')
 @login_required
 def list_laboratorios():

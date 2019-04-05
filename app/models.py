@@ -66,6 +66,7 @@ class Laboratorio(db.Model):
 	
 	professorTitular = db.relationship("Usuario",foreign_keys=[professorTitular_id], backref="laboratoriosTitular", uselist=False)
 	professorSuplente = db.relationship("Usuario",foreign_keys=[professorSuplente_id], backref="laboratoriosSuplente", uselist=False)
+	artefatos = db.relationship('Artefato')
 
 	def __repr__(self):
 		return '<Laboratorio: {}>'.format(self.descricao)
@@ -79,7 +80,7 @@ class Insumo(db.Model):
 	quantidadeMinima = db.Column(db.Integer)
 	codigoBEC = db.Column(db.String(30))
 	laboratorio_id = db.Column(db.Integer, db.ForeignKey('laboratorio.id'))
-	laboratorio = db.relationship('Laboratorio', uselist=False)
+	laboratorio = db.relationship('Laboratorio', backref="insumos", uselist=False)
 
 	def __repr__(self):
 		return '<Insumo: {}>'.format(self.descricao)
